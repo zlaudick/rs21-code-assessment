@@ -16,8 +16,21 @@ function parseCensusJson(censusJson) {
 	var walked = "ACS_13_5YR_B08301_with_ann_HD01_VD19";
 	var greenCommuters = carpool + publicTransport + bicycle + walked;
 
+	censusJson = {
+		"type": "FeatureCollection",
+		"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+		"features": []
+	};
+
+	censusJson.features.push({
+		"type": "Feature",
+		"properties": []
+	});
+
+
+
 	// find the percentage of green commuters
-	var averageGreenCommuters = [];
+	var averageGreenCommuters = null;
 	censusJson.features.forEach(function(feature) {
 		if(Number(feature.properties[totalCommuters]) > 0) {
 			averageGreenCommuters.push(Number(feature.properties[greenCommuters]) / Number(feature.properties[totalCommuters]));
@@ -50,9 +63,21 @@ function parseCensusJson(censusJson) {
 
 
 $(document).ready(function() {
+	// add the actual map
 	L.mapbox.accessToken = "pk.eyJ1IjoiemxhdWRpY2siLCJhIjoiY2l0ejYxbDNzMGE4ZjMzcGxhamR2eHZ4ZiJ9.1tLKHpx2rejGNSMYjCYk1w";
 	var map = L.mapbox.map("map", "mapbox.light");
 	map.setView([35.13, -106.6291], 12);
+
+	overlays = L.layerGroup().addTo(map);
+
+	// load json and perform calculations
+	$.when(loadJSON("data/BernalilloCensusBlocks_Joined.json")).done(function(json) {
+		var censusJson = parseCensusJson(json[0]);
+
+		// Census block feature layer
+		var censusBlocks = L.mapbox.featureLayer().setGeoJSON(censusJson[0]).addTo(map);
+		map.addLayer(censusBlocks);
+	});
 });
 
 
