@@ -68,14 +68,12 @@ $(document).ready(function() {
 	var map = L.mapbox.map("map", "mapbox.light");
 	map.setView([35.13, -106.6291], 12);
 
-	overlays = L.layerGroup().addTo(map);
-
 	// load json and perform calculations
 	$.when(loadJSON("data/BernalilloCensusBlocks_Joined.json")).done(function(json) {
 		var censusJson = parseCensusJson(json[0]);
 
 		// Census block feature layer
-		var censusBlocks = L.mapbox.featureLayer().setGeoJSON(censusJson[0]).addTo(map);
+		var censusBlocks = L.mapbox.featureLayer(censusJson[0]).loadURL('data/BernalilloCensusBlocks_Joined.json').addTo(map);
 		map.addLayer(censusBlocks);
 	});
 });
