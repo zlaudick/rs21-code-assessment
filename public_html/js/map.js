@@ -30,7 +30,7 @@ function parseCensusJson(censusJson) {
 
 
 	// find the percentage of green commuters
-	var averageGreenCommuters = null;
+	var averageGreenCommuters = [];
 	censusJson.features.forEach(function(feature) {
 		if(Number(feature.properties[totalCommuters]) > 0) {
 			averageGreenCommuters.push(Number(feature.properties[greenCommuters]) / Number(feature.properties[totalCommuters]));
