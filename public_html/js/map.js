@@ -6,6 +6,57 @@ function loadJSON(jsonUrl) {
 	});
 }
 
+// draw map key
+function drawKey() {
+	// key width/height in pixels
+	var width = 215, height = 275;
+
+	// grab key element
+	var key = d3.select("#key");
+	var svg = key.append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	// define green commuters gradient
+	var greenGradient = svg.append("svg:defs")
+		.append("svg:linearGradient")
+		.attr("id", "greenGradient")
+		.attr("x1", "50%")
+		.attr("y1", "0%")
+		.attr("x2", "50%")
+		.attr("y2", "100%")
+		.attr("spreadMethod", "pad");
+
+	// define gradient colors
+	greenGradient.append("svg:stop")
+		.attr("offset", "0%")
+		.attr("stop-color", "rgb(0, 200, 0)")
+		.attr("stop-opacity", 1);
+	greenGradient.append("svg:stop")
+		.attr("offset", "100%")
+		.attr("stop-color", "rgb(0, 200, 0)")
+		.attr("stop-opacity", 0);
+
+	// define green commuters bar
+	var greenBar = svg.append("rect")
+		.attr("x", 0)
+		.attr("y", 0)
+		.attr("width", (width/10))
+		.attr("height", height)
+		.style("fill", "url(#greenGradient)");
+
+	// define green commuters bar labels
+	var greenOffset = 5;
+	var textMin = "0% are green commuters", textMax = "100% are green commuters";
+	var greenTextMax = svg.append("text")
+		.attr("x", ((width/10) + greenOffset))
+		.attr("y", 15)
+		.text(textMax);
+	var greenTextMin = svg.append("text")
+		.attr("x", ((width/10) + greenOffset))
+		.attr("y", (height - greenOffset))
+		.text(textMin);
+}
 
 // parses the census block JSON to perform calculations on the target data
 function parseCensusJson(censusJson) {
@@ -59,7 +110,7 @@ $(document).ready(function() {
 	// add the actual map
 	L.mapbox.accessToken = "pk.eyJ1IjoiemxhdWRpY2siLCJhIjoiY2l0ejYxbDNzMGE4ZjMzcGxhamR2eHZ4ZiJ9.1tLKHpx2rejGNSMYjCYk1w";
 	var map = L.mapbox.map("map", "mapbox.light");
-	map.setView([35.13, -106.6291], 12);
+	map.setView([35.0853, -106.6291], 12);
 
 	// load json and perform calculations
 	$.when(loadJSON("data/BernalilloCensusBlocks_Joined.json")).done(function(json) {
@@ -67,6 +118,8 @@ $(document).ready(function() {
 
 		// Census block feature layer
 		var censusBlocks = L.mapbox.featureLayer().setGeoJSON(censusJson[0]).addTo(map);
+
+		drawKey();
 	});
 });
 
