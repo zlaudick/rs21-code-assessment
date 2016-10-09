@@ -65,6 +65,7 @@ function parseCensusJson(censusJson) {
 	var publicTransport = "ACS_13_5YR_B08301_with_ann_HD01_VD10";
 	var bicycle = "ACS_13_5YR_B08301_with_ann_HD01_VD18";
 	var walked = "ACS_13_5YR_B08301_with_ann_HD01_VD19";
+	var medAge = "ACS_13_5YR_B01002_with_ann_HD01_VD02";
 
 
 	// find the percentage of green commuters
@@ -94,11 +95,14 @@ function parseCensusJson(censusJson) {
 		}
 		var stroke = "rgb(100, 100, 100)", fill = "rgba(0, 200, 0, " + fillOpacity + ")", strokeWidth = "2";
 
+		// get median age for each block
+		var medianAge = Number(feature.properties[medAge]);
+
 		// Add the fill and stroke to the block
 		feature.properties.fill = fill;
 		feature.properties.stroke = stroke;
 		feature.properties["stroke-width"] = strokeWidth;
-		feature.properties.title = feature.properties["ACS_13_5YR_B08301_with_ann_GEO.display-label"] + "<br>Green Commuters: " + String(percentGreen.toFixed(4) * 100).substr(0, 5) + "%";
+		feature.properties.title = feature.properties["ACS_13_5YR_B08301_with_ann_GEO.display-label"] + "<br>Green Commuters: " + String(percentGreen.toFixed(4) * 100).substr(0, 5) + "%" + "<br>Median Age: " + String(medianAge);
 	});
 
 	var minMax = [d3.min(averageGreenCommuters), d3.max(averageGreenCommuters)];
