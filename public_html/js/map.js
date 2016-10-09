@@ -30,8 +30,9 @@ function parseCensusJson(censusJson) {
 		var greenCommuters = (Number(feature.properties[carpool])) + (Number(feature.properties[publicTransport])) + (Number(feature.properties[bicycle])) + (Number(feature.properties[walked]));
 		console.log(greenCommuters);
 		console.log(Number(feature.properties[greenCommuters]));
-		if(Number(feature.properties[greenCommuters]) > 0) {
-			averageGreenCommuters.push(Number(feature.properties[greenCommuters]) / Number(feature.properties[totalCommuters]));
+		console.log(Number(feature.properties[totalCommuters]));
+		if(greenCommuters > 0) {
+			averageGreenCommuters.push(greenCommuters / Number(feature.properties[totalCommuters]));
 		}
 	});
 	console.log(averageGreenCommuters);
@@ -39,13 +40,16 @@ function parseCensusJson(censusJson) {
 	var scale = d3.scaleLinear().domain([d3.min(averageGreenCommuters), d3.max(averageGreenCommuters)]).range([0, 1]);
 
 	censusJson.features.forEach(function(feature) {
+		var greenCommuters = (Number(feature.properties[carpool])) + (Number(feature.properties[publicTransport])) + (Number(feature.properties[bicycle])) + (Number(feature.properties[walked]));
 		// Prepare base fill and stroke
 		// fill (color), fill-opacity (0-1), stroke (color), stroke-opacity (0-1), stroke-width (px), title (string)
 		var percentGreen = 0;
 		var fillOpacity = 0;
-		if(Number(feature.properties[greenCommuters]) > 0) {
-			percentGreen = Number(feature.properties[greenCommuters]) / Number(feature.properties[totalCommuters]);
+		if(greenCommuters > 0) {
+			percentGreen = greenCommuters / Number(feature.properties[totalCommuters]);
 			fillOpacity = scale(percentGreen);
+			console.log(percentGreen);
+			console.log(fillOpacity);
 		}
 		var stroke = "rgb(90, 150, 90)", fill = "rgba(90, 200, 90, " + fillOpacity + ")", strokeWidth = "2";
 
@@ -75,7 +79,7 @@ $(document).ready(function() {
 		console.log(censusJson);
 
 		// Census block feature layer
-		var censusBlocks = L.mapbox.featureLayer().loadURL('data/BernalilloCensusBlocks_Joined.json').addTo(map);
+		var censusBlocks = L.mapbox.featureLayer().setGeoJSON(censusJson[0]).addTo(map);
 	});
 });
 
