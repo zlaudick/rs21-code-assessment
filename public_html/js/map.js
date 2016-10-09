@@ -14,32 +14,24 @@ function parseCensusJson(censusJson) {
 	var publicTransport = "ACS_13_5YR_B08301_with_ann_HD01_VD10";
 	var bicycle = "ACS_13_5YR_B08301_with_ann_HD01_VD18";
 	var walked = "ACS_13_5YR_B08301_with_ann_HD01_VD19";
-	// var greenCommuters = Number(feature.properties[totalCommuters]);
 
-	console.log(totalCommuters);
-	console.log(carpool);
-	console.log(publicTransport);
-	console.log(bicycle);
-	console.log(walked);
-	// console.log(greenCommuters);
-	console.log(censusJson);
 
 	// find the percentage of green commuters
 	var averageGreenCommuters = [];
 	censusJson.features.forEach(function(feature) {
+		// find total green commuters
 		var greenCommuters = (Number(feature.properties[carpool])) + (Number(feature.properties[publicTransport])) + (Number(feature.properties[bicycle])) + (Number(feature.properties[walked]));
-		console.log(greenCommuters);
-		console.log(Number(feature.properties[greenCommuters]));
-		console.log(Number(feature.properties[totalCommuters]));
+
+		// find average green commuters
 		if(greenCommuters > 0) {
 			averageGreenCommuters.push(greenCommuters / Number(feature.properties[totalCommuters]));
 		}
 	});
-	console.log(averageGreenCommuters);
 
 	var scale = d3.scaleLinear().domain([d3.min(averageGreenCommuters), d3.max(averageGreenCommuters)]).range([0, 1]);
 
 	censusJson.features.forEach(function(feature) {
+		// total green commuters
 		var greenCommuters = (Number(feature.properties[carpool])) + (Number(feature.properties[publicTransport])) + (Number(feature.properties[bicycle])) + (Number(feature.properties[walked]));
 		// Prepare base fill and stroke
 		// fill (color), fill-opacity (0-1), stroke (color), stroke-opacity (0-1), stroke-width (px), title (string)
@@ -48,10 +40,8 @@ function parseCensusJson(censusJson) {
 		if(greenCommuters > 0) {
 			percentGreen = greenCommuters / Number(feature.properties[totalCommuters]);
 			fillOpacity = scale(percentGreen);
-			console.log(percentGreen);
-			console.log(fillOpacity);
 		}
-		var stroke = "rgb(90, 150, 90)", fill = "rgba(90, 200, 90, " + fillOpacity + ")", strokeWidth = "2";
+		var stroke = "rgb(100, 100, 100)", fill = "rgba(0, 200, 0, " + fillOpacity + ")", strokeWidth = "2";
 
 		// Add the fill and stroke to the block
 		feature.properties.fill = fill;
@@ -73,10 +63,7 @@ $(document).ready(function() {
 
 	// load json and perform calculations
 	$.when(loadJSON("data/BernalilloCensusBlocks_Joined.json")).done(function(json) {
-		console.log(json);
 		var censusJson = parseCensusJson(json);
-
-		console.log(censusJson);
 
 		// Census block feature layer
 		var censusBlocks = L.mapbox.featureLayer().setGeoJSON(censusJson[0]).addTo(map);
