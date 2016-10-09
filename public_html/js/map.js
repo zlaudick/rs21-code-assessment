@@ -14,28 +14,27 @@ function parseCensusJson(censusJson) {
 	var publicTransport = "ACS_13_5YR_B08301_with_ann_HD01_VD10";
 	var bicycle = "ACS_13_5YR_B08301_with_ann_HD01_VD18";
 	var walked = "ACS_13_5YR_B08301_with_ann_HD01_VD19";
-	var greenCommuters = carpool + publicTransport + bicycle + walked;
+	// var greenCommuters = Number(feature.properties[totalCommuters]);
 
-	censusJson = {
-		"type": "FeatureCollection",
-		"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-		"features": []
-	};
-
-	censusJson.features.push({
-		"type": "Feature",
-		"properties": []
-	});
-
-
+	console.log(totalCommuters);
+	console.log(carpool);
+	console.log(publicTransport);
+	console.log(bicycle);
+	console.log(walked);
+	// console.log(greenCommuters);
+	console.log(censusJson);
 
 	// find the percentage of green commuters
 	var averageGreenCommuters = [];
 	censusJson.features.forEach(function(feature) {
-		if(Number(feature.properties[totalCommuters]) > 0) {
+		var greenCommuters = (Number(feature.properties[carpool])) + (Number(feature.properties[publicTransport])) + (Number(feature.properties[bicycle])) + (Number(feature.properties[walked]));
+		console.log(greenCommuters);
+		console.log(Number(feature.properties[greenCommuters]));
+		if(Number(feature.properties[greenCommuters]) > 0) {
 			averageGreenCommuters.push(Number(feature.properties[greenCommuters]) / Number(feature.properties[totalCommuters]));
 		}
 	});
+	console.log(averageGreenCommuters);
 
 	var scale = d3.scaleLinear().domain([d3.min(averageGreenCommuters), d3.max(averageGreenCommuters)]).range([0, 1]);
 
@@ -70,11 +69,13 @@ $(document).ready(function() {
 
 	// load json and perform calculations
 	$.when(loadJSON("data/BernalilloCensusBlocks_Joined.json")).done(function(json) {
-		var censusJson = parseCensusJson(json[0]);
+		console.log(json);
+		var censusJson = parseCensusJson(json);
+
+		console.log(censusJson);
 
 		// Census block feature layer
-		var censusBlocks = L.mapbox.featureLayer(censusJson[0]).loadURL('data/BernalilloCensusBlocks_Joined.json').addTo(map);
-		map.addLayer(censusBlocks);
+		var censusBlocks = L.mapbox.featureLayer().loadURL('data/BernalilloCensusBlocks_Joined.json').addTo(map);
 	});
 });
 
