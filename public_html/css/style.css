@@ -20,3 +20,18 @@ body {
 	border-radius: 3px;
 	border: 1px solid rgba(0, 0, 0, 0.4);
 }
+
+
+.testLine2 {
+	fill: none;
+	stroke: red;
+	stroke-width: 4px;
+	stroke-linecap: round;
+}
+
+.testLine {
+	fill: none;
+	stroke: lime;
+	stroke-width: 4px;
+	stroke-linecap: round;
+}
