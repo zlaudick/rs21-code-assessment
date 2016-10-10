@@ -44,10 +44,11 @@ $(document).ready(function() {
 		var medianAge = graphData[1];
 
 
+		// line graph
 		var margin = 100;
 		var svgMargin = {top: margin, right: margin, bottom: margin, left: margin};
-		var svgTotalWidth = 800;
-		var svgTotalHeight = 800;
+		var svgTotalWidth = 1200;
+		var svgTotalHeight = 400;
 		var svgWidth = svgTotalWidth - svgMargin.left - svgMargin.right;
 		var svgHeight = svgTotalHeight - svgMargin.top - svgMargin.bottom;
 
@@ -72,12 +73,25 @@ $(document).ready(function() {
 			})
 			.y(function(d) {
 				return yScale(d);
-			})
-			.interpolate("cardinal");
+			});
 
 		svg.append("path")
 			.attr("class", "testLine")
 			.attr("d", lineFunction(percentGreen));
+
+
+		// bar graph
+
+		var x = d3.scale.linear()
+			.domain([0, d3.max(percentGreen)])
+			.range([0, 500]);
+
+		d3.select(".chart")
+			.selectAll("div")
+			.data(percentGreen)
+			.enter().append("div")
+			.style("width", function(d) { return x(d) + "px"; })
+			.text(function(d) { return d; });
 
 
 	});

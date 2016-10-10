@@ -31,7 +31,16 @@ body {
 
 .testLine {
 	fill: none;
-	stroke: lime;
-	stroke-width: 4px;
+	stroke: green;
+	stroke-width: 2px;
 	stroke-linecap: round;
+}
+
+.chart div {
+	font: 10px sans-serif;
+	background-color: green;
+	text-align: right;
+	padding: 3px;
+	margin: 1px;
+	color: white;
 }
