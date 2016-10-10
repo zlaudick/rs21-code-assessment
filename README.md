@@ -1,6 +1,8 @@
 # rs21-code-assessment
 Coding Assessment for RS21 application process
 
+[screenshot](images/map-screenshot.png)
+<br>
 My strategy for this project was to decide what data to visualize, then decide how to visualize it, and finally, learn how to visualize it. After looking through the provided data I decided to focus on the transportation data and find out what percentage of people are using environmentally friendly transportation methods for their daily commute. I defined walking, biking, carpooling, and public transportation as environmentally friendly, or "green", transportation methods. <br>
 <br>
 To visualize the data I used Mapbox and D3. I had never used Mapbox before so I turned to Skyler Rexroad (@skylarity) for help. I referenced his recent Mapbox project along with the Mapbox documentation to learn how to create the map with color shading to show the percentage of people using "green" transportation. 
