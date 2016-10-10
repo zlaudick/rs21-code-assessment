@@ -1,7 +1,11 @@
 # rs21-code-assessment
 Coding Assessment for RS21 application process
 
-[screenshot](images/map-screenshot.png)
+![screenshot](https://raw.githubusercontent.com/zlaudick/rs21-code-assessment/master/images/map-screenshot.png)
+<br>
+<br>
+[view project](https://dev-connect.net/~zlaudick/rs21-code-assessment/public_html/)
+<br>
 <br>
 My strategy for this project was to decide what data to visualize, then decide how to visualize it, and finally, learn how to visualize it. After looking through the provided data I decided to focus on the transportation data and find out what percentage of people are using environmentally friendly transportation methods for their daily commute. I defined walking, biking, carpooling, and public transportation as environmentally friendly, or "green", transportation methods. <br>
 <br>
